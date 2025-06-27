@@ -114,7 +114,9 @@
     "allowJs": true,
     "checkJs": false,
     "skipLibCheck": true,
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["src"]
 }
