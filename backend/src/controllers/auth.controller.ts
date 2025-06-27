@@ -18,6 +18,7 @@ export const signup = async (req: Request<{}, {}, SignupRequestBody>, res: Respo
         if (password.length < 6) {
             res.status(400).json({ message: "Password must be at least 6 characters" });
             return;
+            // because promise void can't let you return anything
         }
 
         const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
