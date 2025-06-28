@@ -1,10 +1,13 @@
-import express from "express";
-import {signup} from '../controllers/auth.controller'
+import express from "express"
+import {signup,login,logout,updateProfile} from '../controllers/auth.controller'
+import {protectedRoute} from '../middleware/auth.middleware'
+
 
 const router = express.Router();
 
-router.post('signup',signup)
-// router.post('login',login)
-// router.post('logout',logout)
+router.post('/signup',signup)
+router.post('/login',login)
+router.post('/logout',logout)
+router.put('/update-profile',protectedRoute,updateProfile)
 
 export default router;
