@@ -3,6 +3,7 @@ import User from "../models/user.model";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils";
 import {Types} from "mongoose";
+import cloudinary from "../lib/cloudinary";
 
 interface SignupRequestBody {
     fullName: string;
@@ -107,11 +108,23 @@ export const logout= async (_req:Request ,res:Response):Promise<void> => {
 }
 
 export const updateProfile=async (req:Request<{},{},UpdateProfileRequestBody>,res:Response):Promise<void> => {
-    const {fullName,profilePic}=req.body;
+    const {profilePic}=req.body;
     try{
+        if(!profilePic){
+            res.status(400).json({ message: "Data is already updated" });
+        }
+        // @ts-ignore
+        const userId=req.user._id;
+        const uploadResponse=await cloudinary.uploader.upload(profilePic, userId)
+        const updatedUser=await User.findByIdAndUpdate(userId,{
+            profilePic:uploadResponse.profilePic.secure_url},{
+            new:true
+        })
+        res.status(200).json({updatedUser})
+
 
     }catch(err){
-        console.error("Profile updation error:", err);
+        console.error("Profile update error:", err);
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
