@@ -3,6 +3,7 @@ import authRoutes from "./routes/auth.route";
 import dotenv from "dotenv";
 import {connectDB} from "./lib/db";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -10,9 +11,11 @@ const app:Application = express();
 const PORT:number = parseInt(process.env.PORT || "5001",10);
 // 10 for base 10
 
+app.use(cookieParser());
+app.use(cors());
 app.use(express.json());
 app.use('/api/v1/auth',authRoutes);
-app.use(cookieParser());
+
 
 connectDB()
     .then(() => {

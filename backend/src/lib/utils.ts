@@ -8,7 +8,7 @@ export const generateToken = async (userId: Types.ObjectId,res:Response)=>{
         console.error("❌ JWT_SECRET or NODE_ENV is not defined in environment variables.");
         process.exit(1);
     }
-    const token = jwt.sign({id:userId},process.env.JWT_SECRET,{
+    const token = jwt.sign({userId:userId.toString()},process.env.JWT_SECRET,{
         expiresIn: '7d'
     });
 

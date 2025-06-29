@@ -61,7 +61,6 @@ export const signup = async (req: Request<{}, {}, SignupRequestBody>, res: Respo
     }
 };
 
-
 export const login= async (req: Request<{},{},LoginRequestBody>,res:Response):Promise<void> => {
     const {email, password} = req.body;
     try{
@@ -125,6 +124,17 @@ export const updateProfile=async (req:Request<{},{},UpdateProfileRequestBody>,re
 
     }catch(err){
         console.error("Profile update error:", err);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export const checkAuth=async (req:Request ,res:Response):Promise<void> => {
+    try{
+        // @ts-ignore
+        res.status(200).json(req.user);
+        return;
+    }catch(err){
+        console.error("Error in CheckAuth controller", err);
         res.status(500).json({ message: "Internal Server Error" });
     }
 }
