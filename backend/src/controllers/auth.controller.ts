@@ -112,7 +112,6 @@ export const updateProfile=async (req:Request<{},{},UpdateProfileRequestBody>,re
         if(!profilePic){
             res.status(400).json({ message: "Data is already updated" });
         }
-        // @ts-ignore
         const userId=req.user._id;
         const uploadResponse=await cloudinary.uploader.upload(profilePic, userId)
         const updatedUser=await User.findByIdAndUpdate(userId,{
@@ -130,7 +129,6 @@ export const updateProfile=async (req:Request<{},{},UpdateProfileRequestBody>,re
 
 export const checkAuth=async (req:Request ,res:Response):Promise<void> => {
     try{
-        // @ts-ignore
         res.status(200).json(req.user);
         return;
     }catch(err){
