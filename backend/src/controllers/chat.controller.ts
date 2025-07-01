@@ -1,5 +1,5 @@
 import {Request,Response} from "express";
-import User from "../models/user.model";
+import User, {IUser} from "../models/user.model";
 import Message from "../models/chat.model";
 import cloudinary from "../lib/cloudinary";
 import mongoose from "mongoose";
@@ -8,9 +8,11 @@ interface MessageModel{
     text:string;
     picture:string;
 }
-export const getUsersForSidebar = async (req: Request, res: Response):Promise<void> => {
+export const getUsersForSidebar = async (req: Request & { user?: IUser }
+    , res: Response):Promise<void> => {
     try {
         const loggedUserId = req.user?._id;
+        console.log("User:", req.user);
         if (!loggedUserId){
             res.status(401).json({ message: "Unauthorized" });
             return;
@@ -26,7 +28,8 @@ export const getUsersForSidebar = async (req: Request, res: Response):Promise<vo
 };
 
 // GET chat messages between two users
-export const getChatMessages = async (req: Request, res: Response):Promise<void> => {
+export const getChatMessages = async (req: Request & { user?: IUser }
+    , res: Response):Promise<void> => {
     try {
         const senderId = req.user?._id;
         const receiverParam = req.params.id;
@@ -55,12 +58,17 @@ export const getChatMessages = async (req: Request, res: Response):Promise<void>
 };
 
 export const sendMessages = async (
-    req: Request<{ id: string }, {}, MessageModel>,
+    req: Request<{ id: string }, {}, MessageModel> & { user?: IUser }
+    ,
     res: Response
 ): Promise<void> => {
     try {
         const { text, picture } = req.body;
         const receiverId = new mongoose.Types.ObjectId(req.params.id);
+        if (!req.user) {
+            res.status(401).json({ message: "Unauthorized user problem" });
+            return;
+        }
         const senderId = req.user._id;
 
         let imgUrl = '';

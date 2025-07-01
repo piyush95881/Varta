@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
-import User from "../models/user.model";
+import User, {IUser} from "../models/user.model";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils";
 import {Types} from "mongoose";
 import cloudinary from "../lib/cloudinary";
+
+interface AuthenticatedRequest extends Request {
+    user?: IUser;
+}
 
 interface SignupRequestBody {
     fullName: string;
@@ -106,28 +110,43 @@ export const logout= async (_req:Request ,res:Response):Promise<void> => {
     }
 }
 
-export const updateProfile=async (req:Request<{},{},UpdateProfileRequestBody>,res:Response):Promise<void> => {
-    const {profilePic}=req.body;
-    try{
-        if(!profilePic){
+export const updateProfile = async (
+    req: AuthenticatedRequest & { body: UpdateProfileRequestBody },
+    res: Response
+): Promise<void> => {
+    const { profilePic } = req.body;
+    try {
+        if (!profilePic) {
             res.status(400).json({ message: "Data is already updated" });
+            return;
         }
-        const userId=req.user._id;
-        const uploadResponse=await cloudinary.uploader.upload(profilePic, userId)
-        const updatedUser=await User.findByIdAndUpdate(userId,{
-            profilePic:uploadResponse.profilePic.secure_url},{
-            new:true
-        })
-        res.status(200).json({updatedUser})
 
+        if (!req.user) {
+            res.status(401).json({ message: "Unauthorized user problem" });
+            return;
+        }
 
-    }catch(err){
+        const userId = (req.user)._id;
+        const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+            public_id: (userId as Types.ObjectId).toString(),
+
+        });
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profilePic: uploadResponse.secure_url },
+            { new: true }
+        );
+
+        res.status(200).json({ updatedUser });
+    } catch (err) {
         console.error("Profile update error:", err);
         res.status(500).json({ message: "Internal Server Error" });
     }
-}
+};
 
-export const checkAuth=async (req:Request ,res:Response):Promise<void> => {
+
+export const checkAuth=async (req: AuthenticatedRequest,res:Response):Promise<void> => {
     try{
         res.status(200).json(req.user);
         return;
