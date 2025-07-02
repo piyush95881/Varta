@@ -13,7 +13,12 @@ const PORT:number = parseInt(process.env.PORT || "5001",10);
 // 10 for base 10
 
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(
+    {
+        origin:["http://localhost:5175"],
+        credentials:true
+    }
+));
 app.use(express.json());
 app.use('/api/v1/auth',authRoutes);
 app.use('/api/v1/chat',chatRoutes);
