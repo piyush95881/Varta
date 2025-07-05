@@ -17,6 +17,7 @@ interface AuthState {
     isCheckingAuth: boolean;
     checkAuth: () => Promise<void>;
     signup: (data: SignupPayload) => Promise<void>;
+    logout: ()=>Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -48,6 +49,16 @@ export const useAuthStore = create<AuthState>((set) => ({
             toast.error(err?.response?.data?.message || "Signup failed");
         } finally {
             set({ isSigningUp: false });
+        }
+    },
+
+    logout: async ()=>{
+        try{
+            await axiosInstance.post("/auth/logout");
+            set({authUser:null});
+            toast.success("Logged out successfully");
+        }catch (err: any){
+            toast.error(err?.response?.data?.message || "Logout Failed");
         }
     }
 }));
