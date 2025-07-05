@@ -8,7 +8,10 @@ interface SignupPayload {
     email: string;
     password: string;
 }
-
+interface LoginPayload {
+    email: string;
+    password: string;
+}
 interface AuthState {
     authUser: IUser | null;
     isSigningUp: boolean;
@@ -18,6 +21,7 @@ interface AuthState {
     checkAuth: () => Promise<void>;
     signup: (data: SignupPayload) => Promise<void>;
     logout: ()=>Promise<void>;
+    login: (data: LoginPayload)=>Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -59,6 +63,18 @@ export const useAuthStore = create<AuthState>((set) => ({
             toast.success("Logged out successfully");
         }catch (err: any){
             toast.error(err?.response?.data?.message || "Logout Failed");
+        }
+    },
+    login:async (data)=>{
+        set({isLoggingIn:true});
+        try{
+            await axiosInstance.post("/auth/login",data);
+            set({authUser:null});
+            toast.success("Logged in successfully");
+        }catch (err: any){
+            toast.error(err?.response?.data?.message || "Login Failed");
+        }finally {
+            set({isLoggingIn:false});
         }
     }
 }));
