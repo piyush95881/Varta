@@ -3,12 +3,11 @@ import User, {IUser} from "../models/user.model";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils";
 import {Types} from "mongoose";
-import cloudinary from "../lib/cloudinary";
+import cloudinary from "../config/cloudinary";
 
 interface AuthenticatedRequest extends Request {
     user?: IUser;
 }
-
 interface SignupRequestBody {
     fullName: string;
     email: string;
@@ -20,7 +19,6 @@ interface LoginRequestBody {
     password: string;
 }
 interface UpdateProfileRequestBody {
-    fullName: string;
     profilePic: string;
 }
 
@@ -81,8 +79,13 @@ export const login= async (req: Request<{},{},LoginRequestBody>,res:Response):Pr
         if(!success){
             res.status(400).json({ message: "Invalid Credentials" });
         }
-        await generateToken(existingUser._id as Types.ObjectId,res);
-        res.status(201).json({
+        const token = await generateToken(existingUser._id as Types.ObjectId,res);
+        res.status(201).cookie("jwt",token,{
+            httpOnly:true,
+            maxAge:1000*60*60*24*7,
+            sameSite:"strict",
+            secure:process.env.NODE_ENV !== 'development'
+        }).json({
             _id:existingUser._id,
             fullName:existingUser.fullName,
             email:existingUser.email,
@@ -128,15 +131,21 @@ export const updateProfile = async (
 
         const userId = (req.user)._id;
         const uploadResponse = await cloudinary.uploader.upload(profilePic, {
-            public_id: (userId as Types.ObjectId).toString(),
-
+            folder: 'profile_pics',
+            resource_type: 'auto',
         });
+
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { profilePic: uploadResponse.secure_url },
+            { profilePic: uploadResponse.secure_url || undefined },
             { new: true }
-        );
+        ).select('-password');
+
+        if (!updatedUser) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
 
         res.status(200).json({ updatedUser });
     } catch (err) {

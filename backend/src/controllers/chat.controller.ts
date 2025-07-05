@@ -1,7 +1,7 @@
 import {Request,Response} from "express";
 import User, {IUser} from "../models/user.model";
 import Message from "../models/chat.model";
-import cloudinary from "../lib/cloudinary";
+import cloudinary from "../config/cloudinary";
 import mongoose from "mongoose";
 
 interface MessageModel{

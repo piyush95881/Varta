@@ -22,6 +22,7 @@ interface AuthState {
     signup: (data: SignupPayload) => Promise<void>;
     logout: ()=>Promise<void>;
     login: (data: LoginPayload)=>Promise<void>;
+    updateProfile: (data: { profilePic: string | ArrayBuffer | null })=>Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -75,6 +76,18 @@ export const useAuthStore = create<AuthState>((set) => ({
             toast.error(err?.response?.data?.message || "Login Failed");
         }finally {
             set({isLoggingIn:false});
+        }
+    },
+    updateProfile:async (data)=>{
+        set({isUpdatingProfile:true});
+        try{
+            const res=await axiosInstance.put("/auth/update-profile",data);
+            set({authUser:res.data});
+            toast.success("Profile Updated Successfully");
+        }catch (err: any){
+            toast.error(err?.response?.data?.message || "Profile Update Failed");
+        }finally {
+            set({isUpdatingProfile:false});
         }
     }
 }));
