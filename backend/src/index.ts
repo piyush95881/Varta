@@ -1,6 +1,7 @@
-import express,{Application} from "express";
+import express from "express";
 import authRoutes from "./routes/auth.route";
 import chatRoutes from "./routes/chat.route";
+import {app,server} from "./lib/socket";
 import dotenv from "dotenv";
 import {connectDB} from "./lib/db";
 import cookieParser from "cookie-parser";
@@ -8,7 +9,7 @@ import cors from "cors";
 
 dotenv.config();
 
-const app:Application = express();
+
 const PORT:number = parseInt(process.env.PORT || "5001",10);
 // 10 for base 10
 
@@ -28,7 +29,7 @@ app.use('/api/v1/chat',chatRoutes);
 
 connectDB()
     .then(() => {
-        app.listen(PORT, () => {
+        server.listen(PORT, () => {
             console.log("Server running on port "+PORT);
         });
     })

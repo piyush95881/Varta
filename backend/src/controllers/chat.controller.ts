@@ -3,6 +3,7 @@ import User, {IUser} from "../models/user.model";
 import Message from "../models/chat.model";
 import cloudinary from "../config/cloudinary";
 import mongoose from "mongoose";
+import {getReceiverSocketid, io} from "../lib/socket";
 
 interface MessageModel{
     text:string;
@@ -92,6 +93,11 @@ export const sendMessages = async (
         });
 
         await newMessage.save();
+
+        const receiverSocketId=getReceiverSocketid(receiverId.toString());
+        if(receiverSocketId){
+            io.to(receiverSocketId).emit("newMessage",newMessage);
+        }
 
         res.status(200).json(newMessage);
         return;

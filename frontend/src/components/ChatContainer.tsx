@@ -17,21 +17,24 @@ const ChatContainer = () => {
         unsubscribeFromMessages,
     } = useChatStore();
     const { authUser } = useAuthStore();
-    const messageEndRef = useRef(null);
+    const messageEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (!selectedUser?._id) return;
         getMessages(selectedUser._id);
 
         subscribeToMessages();
 
         return () => unsubscribeFromMessages();
-    }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
+    }, [selectedUser?._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
     useEffect(() => {
         if (messageEndRef.current && messages) {
             messageEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
+
+    if (!selectedUser || !authUser) return null;
 
     if (isMessagesLoading) {
         return (
@@ -48,7 +51,7 @@ const ChatContainer = () => {
             <ChatHeader />
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {messages.map((message) => (
+                {messages.map((message:any) => (
                     <div
                         key={message._id}
                         className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
