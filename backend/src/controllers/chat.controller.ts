@@ -50,8 +50,15 @@ export const getChatMessages = async (req: Request & { user?: IUser }
         }).sort({ createdAt: 1 })
             .populate("SenderId ReceiverId");
 
+        const normalizedChats = chats.map((msg) => ({
+            ...msg.toObject(),
+            SenderId: msg.SenderId._id?.toString?.() || msg.SenderId.toString?.(),
+            ReceiverId: msg.ReceiverId._id?.toString?.() || msg.ReceiverId.toString?.(),
+        }));
 
-        res.status(200).json(chats);
+
+
+        res.status(200).json(normalizedChats);
     } catch (err) {
         console.error("Error in getChatMessages controller:", err);
         res.status(500).json({ error: "Internal Server Error" });
