@@ -5,7 +5,7 @@ export interface chatModel extends Document{
     SenderId:Types.ObjectId;
     ReceiverId:Types.ObjectId;
     text:string;
-    picture:string;
+    picture?:string;
     createdAt?: Date;
     updatedAt?: Date;
 }

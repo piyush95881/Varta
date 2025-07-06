@@ -6,8 +6,8 @@ import {useAuthStore} from "./useAuthStore.ts";
 
 interface Message {
     _id: string;
-    text: string;
-    image?: string;
+    text?: string;
+    picture?: string;
     sender: string;
     receiver: string;
     createdAt: string;
@@ -15,8 +15,8 @@ interface Message {
 }
 
 interface MessageData {
-    text: string;
-    image?: string | null;
+    text?: string;
+    picture?: string | null;
 }
 
 interface ChatStore {
