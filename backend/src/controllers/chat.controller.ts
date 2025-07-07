@@ -1,9 +1,9 @@
 import {Request,Response} from "express";
-import User, {IUser} from "../models/user.model";
-import Message from "../models/chat.model";
-import cloudinary from "../config/cloudinary";
+import User, {IUser} from "../models/user.model.ts";
+import Message from "../models/chat.model.ts";
+import cloudinary from "../config/cloudinary.ts";
 import mongoose from "mongoose";
-import {getReceiverSocketid, io} from "../lib/socket";
+import {getReceiverSocketid, io} from "../lib/socket.ts";
 
 interface MessageModel{
     text:string;

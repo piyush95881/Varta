@@ -1,6 +1,6 @@
-import express = require('express');
-import {protectedRoute} from "../middleware/auth.middleware";
-import {getUsersForSidebar,getChatMessages,sendMessages} from "../controllers/chat.controller";
+import express from "express";
+import {protectedRoute} from "../middleware/auth.middleware.ts";
+import {getUsersForSidebar,getChatMessages,sendMessages} from "../controllers/chat.controller.ts";
 
 const router = express.Router();
 

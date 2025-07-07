@@ -1,6 +1,6 @@
 import { config } from "dotenv";
-import { connectDB } from "../lib/db";
-import User from "../models/user.model";
+import { connectDB } from "../lib/db.ts";
+import User from "../models/user.model.ts";
 
 config();
 

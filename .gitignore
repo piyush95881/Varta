@@ -1,20 +1,43 @@
 # Node modules
 node_modules/
+**/node_modules/
 
 # Build outputs
 dist/
 build/
+**/build/
+**/dist/
 
-backend/src/seeds
-backend/src/seeds/user.seed.ts
+# Frontend-specific
+.next/
+out/
+.cache/
+public/static/
+**/.next/
+**/out/
+**/.cache/
+**/public/static/
+
+# Seeds (if generated or not needed in version control)
+backend/src/seeds/
+# or if you need to track folder but ignore contents:
+# backend/src/seeds/*
+# !backend/src/seeds/.gitkeep
+
 # Environment files
 .env
-.env.*
+.env.local
+.env.development
+.env.test
+.env.production
 
 # Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+logs/
+pids/
 
 # IDE files
 .vscode/
@@ -27,16 +50,13 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 
-# Frontend build artifacts
-*.log
-.cache/
-.next/       # for Next.js
-out/         # for Next.js static export
-public/static/
-
 # Build output
 coverage/
 
-# PM2 logs (if using)
+# PM2 (if used)
 pids
 logs
+
+# Monorepo tools (optional)
+.turbo/
+nx-out/

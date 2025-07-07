@@ -1,6 +1,6 @@
 import express from "express"
-import {signup,login,logout,updateProfile,checkAuth} from '../controllers/auth.controller'
-import {protectedRoute} from '../middleware/auth.middleware'
+import {signup,login,logout,updateProfile,checkAuth} from '../controllers/auth.controller.ts'
+import {protectedRoute} from '../middleware/auth.middleware.ts'
 
 
 const router = express.Router();
