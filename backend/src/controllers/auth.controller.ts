@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import User, {IUser} from "../models/user.model";
+import User, {IUser} from "../models/user.model.ts";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../lib/utils";
+import { generateToken } from "../lib/utils.ts";
 import {Types} from "mongoose";
-import cloudinary from "../config/cloudinary";
+import cloudinary from "../config/cloudinary.ts";
 
 interface AuthenticatedRequest extends Request {
     user?: IUser;
