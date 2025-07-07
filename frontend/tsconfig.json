@@ -22,5 +22,7 @@
     "noEmit": true,
     "incremental": true,
     "noImplicitAny": false // You had this, keeping it here
-  }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
