@@ -5,6 +5,8 @@ node_modules/
 dist/
 build/
 
+backend/src/seeds
+backend/src/seeds/user.seed.ts
 # Environment files
 .env
 .env.*
