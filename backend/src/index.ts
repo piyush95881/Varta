@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import {connectDB} from "./lib/db";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+// import {seedDatabase} from "./seeds/user.seed";
 
 dotenv.config();
 
@@ -36,3 +37,5 @@ connectDB()
     .catch((err:unknown) => {
         console.error("Failed to connect to DB", err);
     });
+
+// seedDatabase();
