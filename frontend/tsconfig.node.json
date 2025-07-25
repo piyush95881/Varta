@@ -1,3 +1,4 @@
+// tsconfig.node.json
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
@@ -13,6 +14,11 @@
     "moduleDetection": "force",
     "noEmit": true,
 
+    "composite": true,
+    "outDir": "./dist",
+    "declaration": false,
+    "emitDeclarationOnly": false,
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -21,5 +27,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts","src"]
 }
