@@ -26,7 +26,7 @@ const LoginPage = () => {
         e.preventDefault();
         const success = validateForm();
 
-        if (success === true) login(formData);
+        if (success === true) await login(formData);
     };
 
     return (

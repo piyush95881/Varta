@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useAuthStore} from "../store/useAuthStore.ts";
+import {useAuthStore} from "../store/useAuthStore";
 import {Eye, EyeOff, Loader2, Mail, MessageSquare, User,Lock} from "lucide-react";
 import toast from "react-hot-toast";
 import {Link} from "react-router-dom"
@@ -26,12 +26,12 @@ const SignupPage = () => {
         return true;
     };
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
 
         const success = validateForm();
 
-        if (success === true) signup(formData);
+        if (success === true) await signup(formData);
     };
 
     return (

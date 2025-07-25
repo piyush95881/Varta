@@ -1,19 +1,20 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 import Navbar from "./components/Navbar";
-import HomePage from "./pages/HomaPage.tsx";
-import SignupPage from "./pages/SignupPage.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
-import SettingsPage from "./pages/SettingsPage.tsx";
-import ProfilePage from "./pages/ProfilePage.tsx";
-import {useAuthStore} from "./store/useAuthStore.ts";
-import {useEffect} from "react";
+import HomePage from "./pages/HomePage";
+import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
+import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
+import {useAuthStore} from "./store/useAuthStore";
+import React, {useEffect} from "react";
 import {Loader} from "lucide-react";
 import {Toaster} from "react-hot-toast";
-import {useThemeStore} from "./store/useThemeStore.ts";
+import {useThemeStore} from "./store/useThemeStore";
+import {IUser} from "./types/user";
 
-const App = () => {
+const App:React.FC = () => {
 
-    const {authUser,checkAuth,isCheckingAuth}=useAuthStore();
+    const {authUser,checkAuth,isCheckingAuth}:{authUser:IUser | null; checkAuth:()=>void; isCheckingAuth:boolean}=useAuthStore();
     const {theme}=useThemeStore();
     useEffect(()=>{
         checkAuth()

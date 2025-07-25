@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { toast } from "react-hot-toast";
-import { axiosInstance } from "../lib/axios.ts";
-import type { IUser } from "../types/user.ts";
-import {useAuthStore} from "./useAuthStore.ts";
+import { axiosInstance } from "../lib/axios";
+import type { IUser } from "../types/user";
+import {useAuthStore} from "./useAuthStore";
 
 interface Message {
     _id: string;
